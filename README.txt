@@ -1,0 +1,1 @@
+devo modificare in persona l'equals in modo tale che paragoni il toString e non ogni volta l'oggetto
