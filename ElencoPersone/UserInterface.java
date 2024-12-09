@@ -77,14 +77,20 @@ public class UserInterface {
         while (true) {
             int choice = showMenu();
             switch (choice) {
-                case 1 -> AddPerson_UserInterface(manager);
-                case 2 -> DelPerson_UserInterface(manager);
-                case 3 -> PrintLoP(manager);
-                case 4 -> {
+                case 1 : 
+                    AddPerson_UserInterface(manager);
+                    break;    
+                case 2 : 
+                    DelPerson_UserInterface(manager);
+                    break;    
+                case 3 : 
+                    PrintLoP(manager);
+                    break;
+                case 4 : {
                     System.out.println("Uscita dal programma.");
                     return;
                 }
-                default -> System.out.println("Errore: scelta non valida.");
+                default : System.out.println("Errore: scelta non valida.");
             }
         }
     }
