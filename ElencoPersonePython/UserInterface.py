@@ -23,7 +23,7 @@ class UserInterface:
         else:
             _ = system('clear')
 
-    def choice(self, c: int):
+    def choice(self,):
         print(self.__menu)
         while(c<0 or c>5):
             print('>> ')
@@ -33,7 +33,7 @@ class UserInterface:
     def callMenu(self, elenco: Elenco):  
         c = -1
         while(c!=0):
-            c=self.chioce(c)
+            c=self.choice(c)
 
         match c:
             case 1:
