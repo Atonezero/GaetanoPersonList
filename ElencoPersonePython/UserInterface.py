@@ -1,14 +1,9 @@
 from os import system, name
 from ListOfPersone import Elenco
+import sys
 from Persona import Persona
-
-def singleton(cls):
-    instances = {}
-    def get_instance(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-    return get_instance
+from singleton import singleton
+from datetime import datetime
 
 @singleton
 class UserInterface:
@@ -23,74 +18,101 @@ class UserInterface:
         else:
             _ = system('clear')
 
-    def choice(self,):
-        print(self.__menu)
-        while(c<0 or c>5):
+    def choice(self, c : int):
+
+        while(c < 1 or c > 6):
             print('>> ')
             c = int(input())
         return c
     
-    def callMenu(self, elenco: Elenco):  
-        c = -1
-        while(c!=0):
-            c=self.choice(c)
+    def callMenu(self, elenco: Elenco):
+        while True:
+            self.clear()
+            print("\n".join(self.__menu))
+            try:
+                c = int(input("\nSeleziona un'opzione: "))
+                if c == 1:
+                    self.Inserisci(elenco)
+                elif c == 2:
+                    self.Cancella(elenco)
+                elif c == 3:
+                    self.Cerca(elenco)
+                elif c == 4:
+                    self.Modifica(elenco)
+                elif c == 5:
+                    self.Visualizza(elenco)
+                elif c == 6:
+                    print("Uscita...")
+                    sys.exit()
+                else:
+                    print("Opzione non valida!")
+            except ValueError:
+                print("Inserisci un numero valido.")
+            input("\nPremi Invio per continuare...")
 
-        match c:
-            case 1:
-                self.Inserisci(elenco)
-            case 2:
-                self.Cancella(elenco)
-            case 3:
-                self.Cerca(elenco)
-            case 4:
-                self.Modifica(elenco)
-            case 5:
-                self.Visualizza(elenco)
-            case 6:
-                exit()
-            case default:
-                print('Scelta non valida')
 
     def Inserisci(self, elenco: Elenco):    
-        print('Inserisci nome: ')
-        nome = input()
-    
-        print('Inserisci Data di Nascita: DD-MM-YYYY')
-        DoB = input()
-    
+        nome = input('Inserisci nome: ')
+        while True:
+            DoB = input('Inserisci Data di Nascita (DD-MM-YYYY): ')
+            try:
+                datetime.strptime(DoB, '%d-%m-%Y')
+                break
+            except ValueError:
+                print("Data non valida. Riprova.")
+
         p = Persona(nome, DoB)
-        elenco.add(p)  
+        elenco.add(p)
+        print("Persona aggiunta con successo.")
 
     def Cancella(self, elenco: Elenco):
-       pass 
+        persona = self.Cerca(elenco)
+        elenco.delede(persona)
+        print("Persona cancellata con successo.")
 
     def Cerca(self, elenco: Elenco):
         print('Inserisci nome: ')
         nome = input()
-        print('Inserisci eta: ')
-        eta = input()
-        if elenco.search(Persona(nome, eta)) != None:
-            print('Persona trovata')
-            print('Trovato a posizone:  ' + elenco.search(Persona(nome, eta)))
-        else:
-            print('Persona non trovata')
+        while True:
+            DoB = input('Inserisci Data di Nascita (DD-MM-YYYY): ')
+            try:
+                datetime.strptime(DoB, '%d-%m-%Y')
+                break
+            except ValueError:
+                print("Data non valida. Riprova.")
 
-    def Modifica(self, elenco: Elenco): 
-        print('Inserisci nome: ')
-        nome = input()
-        print('Inserisci eta: ')
-        eta = input()
-        i = elenco.search(Persona(nome, eta)) 
-        if i != None:
+        if elenco.search(Persona(nome, DoB)) != None:
             print('Persona trovata')
-            print('Trovato a posizone:  ' + i)
-            print('Inserisci nuovo nome: ')
-            nome = input()
-            print('Inserisci nuova Data di Nascita: DD-MM-YYYY')
-            DoB = input()
-            elenco[i] = (Persona(nome, DoB))
+            #print('Trovato a posizone:  ' + str(elenco.search(Persona(nome, DoB))) )
+            return Persona(nome, DoB)
         else:
             print('Persona non trovata')
+            return None
+    
+    def Modifica(self, elenco: Elenco): 
+        nome = input('Inserisci nome da modificare: ')
+        while True:
+            DoB = input('Inserisci Data di Nascita (DD-MM-YYYY): ')
+            try:
+                datetime.strptime(DoB, '%d-%m-%Y')
+                break
+            except ValueError:
+                print("Data non valida. Riprova.")
+        persona = Persona(nome, DoB)
+        elenco.search(persona)
+        
+        if persona:
+            print(f"Modificando: {persona}")
+            elenco.delede(persona)
+            nuovo_nome = input('Inserisci nuovo nome: ')
+            nuovo_DoB = input('Inserisci nuova Data di Nascita (DD-MM-YYYY): ')
+            persona.nome = nuovo_nome
+            persona.DoB = nuovo_DoB
+            elenco.add(persona)
+            print("Persona modificata con successo.")
+        else:
+            print("Persona non trovata.")
+
 
     def Visualizza(self, elenco: Elenco):
         print(elenco)

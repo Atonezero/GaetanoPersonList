@@ -4,9 +4,10 @@ from Persona import Persona
 from os import system, name
 
 def main():
-    UI = UserInterface()
+    ui = UserInterface()
     elenco = Elenco()
-    UI.callMenu(elenco)
+    ui.callMenu(elenco)
         
 if __name__ == '__main__':
     main()
+11
