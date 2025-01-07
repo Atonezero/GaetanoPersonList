@@ -1,0 +1,6 @@
+package ElencoPersone;
+
+interface IinputOutput {
+
+    
+}

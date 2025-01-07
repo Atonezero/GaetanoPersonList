@@ -6,6 +6,10 @@ class Persona:
         self.nome = ''
         self.DoB = ''
 
+    def __init__(self, nome, data):
+        self.nome = nome
+        self.DoB = data
+
     #Override
     def __eq__(self, value):
         if (value == None) : return False
