@@ -9,7 +9,6 @@ public class UserInterface {
     public static UserInterface _instance = null;
     private int id;
 
-
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     private UserInterface() {
@@ -77,20 +76,14 @@ public class UserInterface {
         while (true) {
             int choice = showMenu();
             switch (choice) {
-                case 1 : 
-                    AddPerson_UserInterface(manager);
-                    break;    
-                case 2 : 
-                    DelPerson_UserInterface(manager);
-                    break;    
-                case 3 : 
-                    PrintLoP(manager);
-                    break;
-                case 4 : {
+                case 1 -> AddPerson_UserInterface(manager);
+                case 2 -> DelPerson_UserInterface(manager);
+                case 3 -> PrintLoP(manager);
+                case 4 -> {
                     System.out.println("Uscita dal programma.");
                     return;
                 }
-                default : System.out.println("Errore: scelta non valida.");
+                default -> System.out.println("Errore: scelta non valida.");
             }
         }
     }
@@ -100,7 +93,7 @@ public class UserInterface {
      *  Funzioni di UserInterface
      *
      * */
-    private static void AddPerson_UserInterface(ListOfPersone LoP) {
+    private static void AddPerson_UserInterface(ListOfPersone manager) {
         try {
             System.out.print("Inserisci un nome: ");
             String nome = reader.readLine();
@@ -112,7 +105,7 @@ public class UserInterface {
 
             clearConsole();
             Persona p = new Persona(nome, cognome, DoB);
-            if (LoP.Add(p)) {
+            if (manager.Add(p)) {
                 System.out.println("Persona aggiunta con successo!");
             } else {
                 System.out.println("Errore: impossibile aggiungere la persona.");
@@ -122,7 +115,7 @@ public class UserInterface {
         }
     }
 
-    private static void DelPerson_UserInterface(ListOfPersone LoP) {
+    private static void DelPerson_UserInterface(ListOfPersone manager) {
         try {
             System.out.print("Inserisci il nome della persona da eliminare: ");
             String nome = reader.readLine();
@@ -135,7 +128,7 @@ public class UserInterface {
 
             clearConsole();
             Persona p = new Persona(nome, cognome, DoB);
-            if (LoP.Del(p)) {
+            if (manager.Del(p)) {
                 System.out.println("Persona eliminata con successo!");
             } else {
                 System.out.println("Errore: persona non trovata.");
@@ -145,15 +138,15 @@ public class UserInterface {
         }
     }
 
-    private static void PrintLoP(ListOfPersone LoP) {
+    private static void PrintLoP(ListOfPersone manager) {
         clearConsole();
         System.out.println("\n=== Lista delle Persone ===");
-        if (LoP.isEmpty()) {
+        if (manager.isEmpty()) {
             System.out.println("Nessuna persona presente.");
             return;
         }
 
-        for (Persona persona : LoP.getAll()) {
+        for (Persona persona : manager.getAll()) {
             System.out.println(persona.toString());
         }
     }
