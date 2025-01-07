@@ -1,42 +1,45 @@
 package ElencoPersone;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ListOfPersone {
-    private ArrayList<Persona> _elenco;
-    private int lenght;
+    private List<Persona> people;
 
     public ListOfPersone() {
-        this._elenco = new ArrayList<>();
+        this.people = new ArrayList<>();
     }
 
-    public int getLenght() {
-        return _elenco.size();
+    public boolean Add(Persona persona) {
+        return people.add(persona);
+    }
+
+    public boolean Del(Persona persona) {
+        return people.remove(persona);
+    }
+
+    public List<Persona> getAll() {
+        return people;
     }
 
     public boolean isEmpty() {
-        return _elenco.isEmpty();
+        return people.isEmpty();
     }
 
-    public ArrayList<Persona> getAll() {
-        return new ArrayList<>(_elenco);
+    // Sort by Name
+    public void sortByName() {
+        Collections.sort(people, Comparator.comparing(Persona::getNome));
     }
 
-    public boolean Add(Persona p) {
-        if(p!=null) {
-            this._elenco.add(p);
-            return true;
-        } else return false;
+    // Sort by Surname
+    public void sortBySurname() {
+        Collections.sort(people, Comparator.comparing(Persona::getCognome));
     }
 
-    public boolean Del(Persona p) {
-        if(p!=null && this._elenco.contains(p)) {
-            this._elenco.remove(p);
-            return true;
-        } else return false;
-    }
-
-    public boolean Contains(Persona p) {
-        return ( p!=null && this._elenco.contains(p) );
+    // Sort by Date of Birth
+    public void sortByDob() {
+        Collections.sort(people, Comparator.comparing(Persona::getDoB));
     }
 }
