@@ -102,7 +102,7 @@ class UserInterface:
         elenco.search(persona)
         
         if persona:
-            print(f"Modificando: {persona}")
+            print("Modificando: persona" + str(persona))
             elenco.delede(persona)
             nuovo_nome = input('Inserisci nuovo nome: ')
             nuovo_DoB = input('Inserisci nuova Data di Nascita (DD-MM-YYYY): ')
