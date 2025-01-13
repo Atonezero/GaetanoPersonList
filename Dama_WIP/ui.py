@@ -13,7 +13,7 @@ class UI:
         self.piece_colors = {1: (255, 0, 0), -1: (0, 0, 255)} 
         self.selected_piece = None
         self.selected_pos = None
-        self.turn = 1 
+        self.turn = 1  # 1: Player's turn, -1: AI's turn
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Dama Game")
@@ -30,7 +30,9 @@ class UI:
             for col in range(8):
                 piece = self.game.board[row][col]
                 if piece != 0:
-                    pygame.draw.circle(self.screen, self.piece_colors[piece], (col * self.square_size + self.square_size // 2, row * self.square_size + self.square_size // 2), self.square_size // 3)
+                    pygame.draw.circle(self.screen, self.piece_colors[piece], 
+                                       (col * self.square_size + self.square_size // 2, row * self.square_size + self.square_size // 2), 
+                                       self.square_size // 3)
 
     def draw_menu(self):
         self.screen.fill((0, 0, 0))
@@ -74,7 +76,7 @@ class UI:
 
     def select_piece(self, pos):
         row, col = pos
-        if self.game.board[row][col] == 1:
+        if self.game.board[row][col] == self.turn:
             self.selected_piece = self.game.board[row][col]
             self.selected_pos = pos
 
@@ -84,7 +86,7 @@ class UI:
             if self.game.move(from_pos, to_pos):
                 self.selected_piece = None
                 self.selected_pos = None
-                self.turn = -1 
+                self.turn = -1  # Switch to AI's turn
 
     def run(self):
         self.run_menu()
@@ -96,19 +98,24 @@ class UI:
 
             if self.turn == -1:
                 self.ai.choose_move()
-                self.turn = 1 
+                self.turn = 1  
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.turn == 1:
+                    pygame.time.delay(500)
                     x, y = event.pos
                     col = x // self.square_size
-                    row = y // self.square_size
+                    row = y // self.square_size 
                     if self.selected_piece is None:
+                        #pygame.time.delay(500)
                         self.select_piece((row, col))
                     else:
+                        pygame.time.delay(500)
                         self.move_piece((row, col))
+            
+            # Check for game-over condition (when either the player or AI has no pieces left)
             if not any(-1 in row for row in self.game.board):
                 self.show_victory("Giocatore")
                 running = False

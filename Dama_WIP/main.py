@@ -9,8 +9,7 @@ def main():
     
     # Inizializza l'interfaccia utente con il gioco e l'IA
     ui = UI(game, ai)
-    
-    # Avvia il ciclo principale del gioco
+
     ui.run()
 
 if __name__ == "__main__":

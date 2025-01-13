@@ -27,6 +27,7 @@ class Ai:
             for col in range(8):
                 if self.dama.board[row][col] == -1:
                     valid_moves.extend(self.check_move((row, col)))
+
         if not valid_moves:
             return
 
@@ -34,11 +35,15 @@ class Ai:
             move = random.choice(valid_moves)
         elif self.difficulty == "medium":
             capture_moves = [move for move in valid_moves if abs(move[1][0] - move[0][0]) == 2]
-            move = random.choice(capture_moves) if capture_moves else random.choice(valid_moves)
+            if capture_moves:
+                move = random.choice(capture_moves)
+            else:
+                move = random.choice(valid_moves)
         elif self.difficulty == "hard":
-            _, move = self.minimax(valid_moves) 
-
+            _, move = self.minimax(valid_moves)
+        
         self.dama.move(move[0], move[1])
+
 
     def minimax(self, valid_moves, depth=3, maximizing=True):
         if depth == 0 or not valid_moves:
@@ -51,11 +56,12 @@ class Ai:
                 self.dama.move(move[0], move[1])
                 next_moves = self.generate_possible_moves()
                 value, _ = self.minimax(next_moves, depth-1, False)
-                self.dama.undo_move(move)
+                self.dama.undo_move(move)  # Undo the move to evaluate the next possible one
                 if value > best_value:
                     best_value = value
                     best_move = move
             return best_value, best_move
+        else:
             best_move = None
             best_value = float('inf')
             for move in valid_moves:
@@ -67,6 +73,7 @@ class Ai:
                     best_value = value
                     best_move = move
             return best_value, best_move
+
 
     def evaluate_board(self):
         score = 0
@@ -82,6 +89,6 @@ class Ai:
         valid_moves = []
         for row in range(8):
             for col in range(8):
-                if self.dama.board[row][col] == -1: 
+                if self.dama.board[row][col] == -1:  # For AI's pieces
                     valid_moves.extend(self.check_move((row, col)))
         return valid_moves
