@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
+package ElencoVeicoliJava;
 
     public class FactoryVeicoli {
         public static Veicolo creaVeicolo(int tipo, String marca, String modello, String targa, int numeroPorte, Boolean haBauletto, String pesoMassimo) {

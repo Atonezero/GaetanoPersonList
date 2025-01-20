@@ -1,4 +1,4 @@
-package ElencoVeicoli;
+package ElencoVeicoliJava;
 
 public class Mezzi_Pesanti extends Veicolo{
     private String PesoSupportato;
@@ -30,6 +30,6 @@ public class Mezzi_Pesanti extends Veicolo{
                 ", Targa: " + getTarga() +
                 ", Cilindrata: " + getCilindrata()  +
                 ", Peso Supportato: " + PesoSupportato +
-                "Kg }";
+                " Kg }";
     }
 }

@@ -1,4 +1,4 @@
-package ElencoVeicoli;
+package ElencoVeicoliJava;
 
 public interface IinputOutput {
     public void print(String msg);

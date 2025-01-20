@@ -1,9 +1,10 @@
-package ElencoVeicoli;
+package ElencoVeicoliJava;
 
 public class Main{
     public static void main(String[] args){
-        ListOfVeicoli manager = new ListOfVeicoli();
-        UserInterface UI = UserInterface.getInstance();
+        IinputOutput io = new UIConsole();
+        ElencoVeicoli manager = new ElencoVeicoli();
+        UserInterface UI = UserInterface.getInstance(io);
         UI.run(manager);
     }
 }
