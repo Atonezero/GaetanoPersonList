@@ -132,24 +132,25 @@
                 Veicolo veicolo = _manager.getVeicolo(index);
 
                 _io.println("Modifica i dati del veicolo (premi Invio per mantenere il valore corrente):");
+                _io.println("");
                 
                 _io.println("Ruote attuale: " + veicolo.getRuote());
-                _io.println("Nuova Ruote:");
+                _io.print("Nuova Ruote:");
                 String nuovaRuote = _io.input();
                 if (!nuovaRuote.isEmpty()) veicolo.setMarca(nuovaRuote);
 
                 _io.println("Marca attuale: " + veicolo.getMarca());
-                _io.println("Nuova marca:");
+                _io.print("Nuova marca:");
                 String nuovaMarca = _io.input();
                 if (!nuovaMarca.isEmpty()) veicolo.setMarca(nuovaMarca);
 
                 _io.println("Cilindrata attuale: " + veicolo.getCilindrata());
-                _io.println("Nuovo cilindrata:");
+                _io.print("Nuovo cilindrata:");
                 String nuovoCilindrata = _io.input();
                 if (!nuovoCilindrata.isEmpty()) veicolo.setCilindrata(nuovoCilindrata);
 
                 _io.println("Targa attuale: " + veicolo.getTarga());
-                _io.println("Nuova targa:");
+                _io.print("Nuova targa:");
                 String nuovaTarga = _io.input();
                 if (!nuovaTarga.isEmpty()) veicolo.setTarga(nuovaTarga);
 
@@ -171,7 +172,7 @@
                 } else if (choice == 4) {
                     ModificaVeicolo(_manager);
                 } else if (choice == 5) {
-                    _manager.setVeicoli(FileManager.caricaDaFile("/workspaces/GaetanoPersonList/ElencoVeicoliJava/Elenco di Veicoli.txt", new FileManager.FileParser<Veicolo>() {
+                    _manager.setVeicoli(FileManager.caricaDaFile("Elenco di Veicoli.txt", new FileManager.FileParser<Veicolo>() {
                     @Override
                     public Veicolo parse(String line) {
                         try {
@@ -210,7 +211,7 @@
                                     boolean haBauletto = Boolean.parseBoolean(parts[5].trim());
                                     return new Motocicli(ruote, marca, cilindrata, targa, haBauletto);
                     
-                                case "Mezzo Pesante":
+                                case "Mezzo_pesante":
                                     if (parts.length != 6) {
                                         throw new IllegalArgumentException("Riga malformattata per Mezzo Pesante: " + line);
                                     }
@@ -231,7 +232,7 @@
                     _io.input();
                 } else if (choice == 6) {
                     // Salva i veicoli su file
-                    FileManager.salvaSuFile("/workspaces/GaetanoPersonList/ElencoVeicoliJava/Elenco di Veicoli.txt", _manager.getVeicoli(), new FileManager.FileFormatter<Veicolo>() {
+                    FileManager.salvaSuFile("Elenco di Veicoli.txt", _manager.getVeicoli(), new FileManager.FileFormatter<Veicolo>() {
                         @Override
                         public String format(Veicolo v) {
                             String base = v.getRuote() + ", " + v.getMarca() + ", " + v.getCilindrata() + ", " + v.getTarga();
@@ -244,7 +245,7 @@
                                 return "Quadriciclo, " + base + ", " + quadriciclo.getPorte();
                             } else if (v instanceof Mezzi_Pesanti) {
                                 Mezzi_Pesanti mezzoPesante = (Mezzi_Pesanti) v;
-                                return "Mezzo pesante, " + base + ", " + mezzoPesante.getPesoSupportato();
+                                return "Mezzo_pesante, " + base + ", " + mezzoPesante.getPesoSupportato();
                             }
                             
                             return base;

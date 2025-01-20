@@ -32,7 +32,6 @@ public class ElencoVeicoli {
         } else {
             _io.println("");
             _io.println("Elenco dei veicoli:");
-            _io.println("");
             for (int i = 0; i < veicoli.size(); i++) {
                 Veicolo v = veicoli.get(i);
                 _io.println("");
