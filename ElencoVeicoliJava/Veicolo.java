@@ -30,13 +30,6 @@ public class Veicolo{
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == null || getClass() != o.getClass()) return null;
-        Veicolo veicolo = (Veicolo) o;
-        return Object.equals(Targa, veicolo.Targa) && Object.equals(Ruote, veicolo.Ruote) && Object.equals(Marca, veicolo.Marca) && Object.equals(Cilindrata, veicolo.Cilindrata);
-    }
-
-    @Override
     public String toString() {
         return "{" +
                 "Ruote: " + Ruote  +

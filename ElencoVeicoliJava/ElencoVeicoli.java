@@ -5,35 +5,40 @@ import java.util.List;
 
 public class ElencoVeicoli {
     private List<Veicolo> veicoli;
+    private IinputOutput _io;
 
-    public ElencoVeicoli() {
+    public ElencoVeicoli(IinputOutput io) {
         this.veicoli = new ArrayList<>();
+        this._io = io;
     }
 
-    public void aggiungiVeicolo(Veicolo veicolo) {
+    public void AddVeicolo(Veicolo veicolo) {
         veicoli.add(veicolo);
-        System.out.println("Veicolo aggiunto con successo!");
+        _io.println("Veicolo aggiunto con successo!");
     }
 
-    public void rimuoviVeicolo(int indice) {
+    public void removeVeicolo(int indice) {
         if (indice >= 0 && indice < veicoli.size()) {
             Veicolo rimosso = veicoli.remove(indice);
-            System.out.println("Veicolo rimosso: " + rimosso.getClass().getSimpleName());
+            _io.println("Veicolo rimosso: " + rimosso.getClass().getSimpleName());
         } else {
-            System.out.println("Indice non valido.");
+            _io.println("Indice non valido.");
         }
     }
 
     public void stampaVeicoli() {
         if (veicoli.isEmpty()) {
-            System.out.println("Nessun veicolo nell'elenco.");
+            _io.println("Nessun veicolo nell'elenco.");
         } else {
-            System.out.println("Elenco dei veicoli:");
+            _io.println("Elenco dei veicoli:");
             for (int i = 0; i < veicoli.size(); i++) {
                 Veicolo v = veicoli.get(i);
-                System.out.println((i + 1) + ". " + v.getClass().getSimpleName());
-                v.descrizione();
+                _io.println((i + 1) + ". " + v.getClass().getSimpleName());
+                _io.print(v.toString());
             }
+            _io.println("");
+            _io.print("Premi invio per continuare ...");
+            _io.input();
         }
     }
 
@@ -48,5 +53,13 @@ public class ElencoVeicoli {
 
     public int numeroVeicoli() {
         return veicoli.size();
+    }
+
+    public void setVeicoli(List<Veicolo> veicoli) {
+        this.veicoli = veicoli;
+    }
+
+    public List<Veicolo> getVeicoli() {
+        return this.veicoli;
     }
 }
