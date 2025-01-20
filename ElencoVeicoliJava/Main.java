@@ -5,6 +5,6 @@ public class Main{
         IinputOutput io = new UIConsole();
         ElencoVeicoli manager = new ElencoVeicoli();
         UserInterface UI = UserInterface.getInstance(io);
-        UI.run(manager);
+        UI.runMenu(manager);
     }
 }

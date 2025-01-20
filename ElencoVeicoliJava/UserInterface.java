@@ -4,18 +4,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class UserInterface {
-    public static UserInterface _instance = null;
+    private ElencoVeicoli _manager;
     private IinputOutput _io;
 
-    private UserInterface(IinputOutput io) {
+    private UserInterface(IinputOutput io, ElencoVeicoli manager) {
         this._io = io;
-    }
-
-    public static UserInterface getInstance(IinputOutput io) {
-        if (UserInterface._instance == null) {
-            UserInterface._instance = new UserInterface(io);
-        }
-        return UserInterface._instance;
+        this.manager = manager;
     }
 
     public void clearConsole() {
@@ -32,7 +26,7 @@ public class UserInterface {
         }
     }
 
-    public int run() {
+    public int callMenu() {
         clearConsole();
         _io.println("\n=== Menu ===");
         _io.println("1. Aggiungi Veicolo");
@@ -45,7 +39,7 @@ public class UserInterface {
         int choice;
         while (true) {
             try {
-                choice = Integer.parseInt(scanner.nextLine());
+                choice = _io.inputInt();
                 if (choice >= 1 && choice <= 5) break;
                 _io.println("Opzione non valida. Riprova.");
             } catch (NumberFormatException e) {
@@ -68,32 +62,35 @@ public class UserInterface {
         _io.println("Scegli il tipo di veicolo da aggiungere:");
         int scelta = _io.inputInt();
 
-        _io.println("Inserisci la marca:");
-        String marca = _io.inputString();
+        _io.println("Inserisci il numero di ruote:");
+        String ruote = _io.input();
 
-        _io.println("Inserisci il modello:");
-        String modello = _io.inputString();
+        _io.println("Inserisci la marca:");
+        String marca = _io.input();
 
         _io.println("Inserisci la targa:");
-        String targa = _io.inputString();
+        String targa = _io.input();
+        
+        _io.println("Inserisci la Cilindarata:");
+        String cilindrata = _io.input();
 
         String numeroPorte = null, pesoMassimo = null, haBauletto = null;
 
         if(scelta == 1){
             _io.println("Inserisci il numero di porte:");
-            numeroPorte = _io.inputString();
+            numeroPorte = _io.input();
         }
         else if(scelta == 2) {
             _io.println("Presenza Bauletto (true/false):");
-            haBauletto = _io.inputString();
+            haBauletto = _io.input();
         }
         else if(scelta == 3){
             _io.println("Peso massimo supportato:");
-            pesoMassimo = _io.inputString();
+            pesoMassimo = _io.input();
         }
 
         try {
-            Veicolo veicolo = FactoryVeicoli.creaVeicolo(scelta, marca, modello, targa, numeroPorte, Boolean.parseBoolean(haBauletto), pesoMassimo);
+            Veicolo veicolo = FactoryVeicoli.creaVeicolo(scelta, ruote, marca, cilindrata, targa, numeroPorte, Boolean.parseBoolean(haBauletto), pesoMassimo);
             elencoVeicoli.AddVeicolo(veicolo);
             _io.println("Veicolo aggiunto con successo.");
         } catch (IllegalArgumentException e) {
@@ -115,7 +112,7 @@ public class UserInterface {
     private void DeledeVeicolo(ElencoVeicoli elencoVeicoli) {
         clearConsole();
         _io.println("Inserisci la targa del veicolo da eliminare:");
-        String targa = _io.inputString();
+        String targa = _io.input();
 
         int index = trovaVeicolo(elencoVeicoli, targa);
         if (index != -1) {
@@ -129,7 +126,7 @@ public class UserInterface {
     private void ModificaVeicolo(ElencoVeicoli elencoVeicoli) {
         clearConsole();
         _io.println("Inserisci la targa del veicolo da modificare:");
-        String targa = _io.inputString();
+        String targa = _io.input();
 
         int index = trovaVeicolo(elencoVeicoli, targa);
         if (index != -1) {
@@ -139,17 +136,17 @@ public class UserInterface {
 
             _io.println("Marca attuale: " + veicolo.getMarca());
             _io.println("Nuova marca:");
-            String nuovaMarca = _io.inputString();
+            String nuovaMarca = _io.input();
             if (!nuovaMarca.isEmpty()) veicolo.setMarca(nuovaMarca);
 
             _io.println("Modello attuale: " + veicolo.getModello());
             _io.println("Nuovo modello:");
-            String nuovoModello = _io.inputString();
+            String nuovoModello = _io.input();
             if (!nuovoModello.isEmpty()) veicolo.setModello(nuovoModello);
 
             _io.println("Targa attuale: " + veicolo.getTarga());
             _io.println("Nuova targa:");
-            String nuovaTarga = _io.inputString();
+            String nuovaTarga = _io.input();
             if (!nuovaTarga.isEmpty()) veicolo.setTarga(nuovaTarga);
 
             _io.println("Veicolo modificato con successo.");
@@ -158,9 +155,9 @@ public class UserInterface {
         }
     }
 
-    public void callMenu(ElencoVeicoli elencoVeicoli) {
+    public void runMenu(ElencoVeicoli elencoVeicoli) {
         while (true) {
-            int choice = run();
+            int choice = callMenu();
             if (choice == 1) {
                 AddVeicolo(elencoVeicoli);
             } else if (choice == 2) {
