@@ -1,0 +1,4 @@
+Quadriciclo, 4, Fiat, 1200, XXXXX, 5
+Motociclo, 2, Yamaha, 600, ZZZZZ, true
+Mezzo pesante, 6, Volvo, 16000, YYYYY, 20000
+Motociclo, 2, Suzuki, 300, CCCCC, false

@@ -1,7 +1,5 @@
     package ElencoVeicoliJava;
 
-    import ElencoPersoneJava.Persona;
-
     public class UserInterface {
         private ElencoVeicoli _manager;
         private IinputOutput _io;
@@ -41,7 +39,7 @@
             while (true) {
                 try {
                     choice = _io.inputInt();
-                    if (choice >= 1 && choice <= 5) break;
+                    if (choice >= 1 && choice <= 7) break;
                     _io.println("Opzione non valida. Riprova.");
                 } catch (NumberFormatException e) {
                     _io.println("Input non valido. Inserisci un numero.");
@@ -52,7 +50,7 @@
 
         private void MenuOfVeicoli() {
             _io.println("Lista Tipi di Veicoli:");
-            _io.println("1. Quatriciclo");
+            _io.println("1. Quadriciclo");
             _io.println("2. Motociclo");
             _io.println("3. Mezzo Pesante");
         }
@@ -173,67 +171,87 @@
                 } else if (choice == 4) {
                     ModificaVeicolo(_manager);
                 } else if (choice == 5) {
-                    _manager.setVeicoli(FileManager.caricaDaFile("Elenco di Veicoli.txt", new FileManager.FileParser<Veicolo>() {
+                    _manager.setVeicoli(FileManager.caricaDaFile("/workspaces/GaetanoPersonList/ElencoVeicoliJava/Elenco di Veicoli.txt", new FileManager.FileParser<Veicolo>() {
                     @Override
                     public Veicolo parse(String line) {
-                        String[] parts = line.split(",");
-                        
-                        // Tipo di veicolo come stringa
-                        String tipoVeicolo = parts[0];
-                        
-                        // Dati comuni
-                        String ruote = parts[1];
-                        String marca = parts[2];
-                        String cilindrata = parts[3];
-                        String targa = parts[4];
-                        
-                        // Dati specifici
-                        String numeroPorte = parts.length > 5 ? parts[5] : null;  // Es. per QuattroRuote
-                        boolean haBauletto = parts.length > 6 ? Boolean.parseBoolean(parts[6]) : false;  // Es. per Motociclo
-                        String pesoMassimo = parts.length > 7 ? parts[7] : null;  // Es. per Pesante
-                        
-                        Veicolo veicolo = null;
-                
-                        // Determina il tipo di veicolo basato sul primo campo (tipoVeicolo)
-                        switch (tipoVeicolo) {
-                            case "Motociclo":
-                                veicolo = new Motocicli(ruote, marca, cilindrata, targa,haBauletto);
-                                break;
-                            case "Quadriciclo":
-                                veicolo = new Quatriciclo(ruote, marca, cilindrata, targa, numeroPorte);
-                                break;
-                            case "Mezzo Pesante":
-                                veicolo = new Mezzi_Pesanti(ruote, marca, cilindrata, targa ,pesoMassimo);
-                                break;
-                            default:
-                                throw new IllegalArgumentException("Tipo di veicolo sconosciuto: " + tipoVeicolo);
+                        try {
+                            // Rimuovi spazi aggiuntivi prima e dopo la riga
+                            line = line.trim();
+                    
+                            // Dividi i campi eliminando spazi superflui
+                            String[] parts = line.split(",\\s*");
+                    
+                            if (parts.length < 5) {
+                                throw new IllegalArgumentException("Riga malformattata o incompleta: " + line);
+                            }
+                    
+                            // Identifica il tipo di veicolo
+                            String tipoVeicolo = parts[0].trim();
+                    
+                            // Campi comuni
+                            String ruote = parts[1].trim();
+                            String marca = parts[2].trim();
+                            String cilindrata = parts[3].trim();
+                            String targa = parts[4].trim();
+                    
+                            // Identifica e crea il veicolo in base al tipo
+                            switch (tipoVeicolo) {
+                                case "Quadriciclo":
+                                    if (parts.length != 6) {
+                                        throw new IllegalArgumentException("Riga malformattata per Quadriciclo: " + line);
+                                    }
+                                    String numeroPorte = parts[5].trim();
+                                    return new Quadriciclo(ruote, marca, cilindrata, targa, numeroPorte);
+                    
+                                case "Motociclo":
+                                    if (parts.length != 6) {
+                                        throw new IllegalArgumentException("Riga malformattata per Motociclo: " + line);
+                                    }
+                                    boolean haBauletto = Boolean.parseBoolean(parts[5].trim());
+                                    return new Motocicli(ruote, marca, cilindrata, targa, haBauletto);
+                    
+                                case "Mezzo Pesante":
+                                    if (parts.length != 6) {
+                                        throw new IllegalArgumentException("Riga malformattata per Mezzo Pesante: " + line);
+                                    }
+                                    String pesoMassimo = parts[5].trim();
+                                    return new Mezzi_Pesanti(ruote, marca, cilindrata, targa, pesoMassimo);
+                    
+                                default:
+                                    throw new IllegalArgumentException("Tipo di veicolo sconosciuto: " + tipoVeicolo);
+                            }
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException("Errore durante il parsing della riga: " + line, e);
                         }
-                
-                        return veicolo;
                     }
+                    
+                        
                 }));
+                    _io.println("Caricamento riuscito...");
+                    _io.input();
                 } else if (choice == 6) {
                     // Salva i veicoli su file
-                    FileManager.salvaSuFile("Elenco di Veicoli.txt", _manager.getVeicoli(), new FileManager.FileFormatter<Veicolo>() {
+                    FileManager.salvaSuFile("/workspaces/GaetanoPersonList/ElencoVeicoliJava/Elenco di Veicoli.txt", _manager.getVeicoli(), new FileManager.FileFormatter<Veicolo>() {
                         @Override
                         public String format(Veicolo v) {
-                            String base = v.getRuote() + "," + v.getMarca() + "," + v.getCilindrata();
+                            String base = v.getRuote() + ", " + v.getMarca() + ", " + v.getCilindrata() + ", " + v.getTarga();
         
                             if (v instanceof Motocicli) {
                                 Motocicli motociclo = (Motocicli) v;
-                                return "Motociclo," + base + "," + motociclo.isBauletto();
-                            } else if (v instanceof Quatriciclo) {
-                                Quatriciclo quadriciclo = (Quatriciclo) v;
-                                return "QuattroRuote," + base + "," + quadriciclo.getPorte();
+                                return "Motociclo, " + base + ", " + motociclo.isBauletto();
+                            } else if (v instanceof Quadriciclo) {
+                                Quadriciclo quadriciclo = (Quadriciclo) v;
+                                return "Quadriciclo, " + base + ", " + quadriciclo.getPorte();
                             } else if (v instanceof Mezzi_Pesanti) {
                                 Mezzi_Pesanti mezzoPesante = (Mezzi_Pesanti) v;
-                                return "Pesante," + base + "," + mezzoPesante.getPesoSupportato();
+                                return "Mezzo pesante, " + base + ", " + mezzoPesante.getPesoSupportato();
                             }
                             
                             return base;
                         }
                     });
-                    _io.println("Veicoli salvati su file.");
+                    _io.println("Veicoli salvati su file. Premi per continuare ...");
+                    _io.input();
                 } else if (choice == 7) {
                     _io.println("Uscita dal programma.");
                     return;

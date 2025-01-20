@@ -30,9 +30,12 @@ public class ElencoVeicoli {
         if (veicoli.isEmpty()) {
             _io.println("Nessun veicolo nell'elenco.");
         } else {
+            _io.println("");
             _io.println("Elenco dei veicoli:");
+            _io.println("");
             for (int i = 0; i < veicoli.size(); i++) {
                 Veicolo v = veicoli.get(i);
+                _io.println("");
                 _io.println((i + 1) + ". " + v.getClass().getSimpleName());
                 _io.print(v.toString());
             }

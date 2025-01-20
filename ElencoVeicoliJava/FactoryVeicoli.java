@@ -4,7 +4,7 @@ package ElencoVeicoliJava;
         public static Veicolo creaVeicolo(int tipo, String ruote, String marca, String cilindrata, String targa, String numeroPorte, Boolean haBauletto, String pesoMassimo) {
             switch (tipo) {
                 case 1: 
-                    return new Quatriciclo(ruote, marca, cilindrata, targa, numeroPorte);
+                    return new Quadriciclo(ruote, marca, cilindrata, targa, numeroPorte);
                 case 2: 
                     return new Motocicli(ruote, marca, cilindrata, targa, haBauletto);
                 case 3:

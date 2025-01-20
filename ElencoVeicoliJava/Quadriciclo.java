@@ -1,9 +1,9 @@
 package ElencoVeicoliJava;
 
-public class Quatriciclo extends Veicolo{
+public class Quadriciclo extends Veicolo{
     private String Porte;
 
-    public Quatriciclo(String Ruote, String Marca, String Cilindrata, String Targa, String Porte){
+    public Quadriciclo(String Ruote, String Marca, String Cilindrata, String Targa, String Porte){
         super(Ruote, Marca, Cilindrata, Targa);
         this.Porte = Porte;
     }
